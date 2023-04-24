@@ -1,4 +1,5 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +27,7 @@ class MainRepository {
 
   Future<OpenAI> _setupOpenAI() async {
     final openAI = OpenAI.instance.build(
-        token: "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",
+        token: dotenv.env['OPENAI_API_KEY'],
         baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
         isLog: true);
 

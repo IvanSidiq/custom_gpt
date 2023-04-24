@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'app/myapp.dart';
@@ -24,6 +25,7 @@ void main() async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
+  await dotenv.load();
 
   FlutterNativeSplash.remove();
   runZonedGuarded(
