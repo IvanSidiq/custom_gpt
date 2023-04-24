@@ -1,0 +1,9 @@
+{
+    "error": {
+        "fill_username": "Silahkan isi username",
+        "fill_password": "Silahkan isi password"
+    },
+    "login": "Login ",
+    "hi_welcome": "Hai, selamat datang {}",
+    "welcome": "Selamat datang"
+}

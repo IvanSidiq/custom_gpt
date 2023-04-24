@@ -1,0 +1,9 @@
+{
+    "error": {
+        "fill_username": "Please fill username",
+        "fill_password": "Please fill password"
+    },
+    "login": "Login ",
+    "hi_welcome": "Hi, welcome {}",
+    "welcome": "Welcome"
+}
