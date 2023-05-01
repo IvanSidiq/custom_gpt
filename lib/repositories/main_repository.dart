@@ -1,4 +1,7 @@
-import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -21,16 +24,40 @@ class MainRepository {
   }
 
   Future<void> setConfig() async {
-    OpenAI openAI = await _setupOpenAI();
-    DIService.initializeConfig(openAI);
+    Dio dio = await _setupDio();
+    DIService.initializeConfig(dio);
   }
 
-  Future<OpenAI> _setupOpenAI() async {
-    final openAI = OpenAI.instance.build(
-        token: dotenv.env['OPENAI_API_KEY'],
-        baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
-        isLog: true);
+  Future<Dio> _setupDio() async {
+    BaseOptions options = BaseOptions(
+        baseUrl: "https://api.openai.com/v1/",
+        connectTimeout: const Duration(milliseconds: 8000),
+        receiveTimeout: const Duration(milliseconds: 8000),
+        sendTimeout: const Duration(milliseconds: 8000),
+        headers: {
+          'accept': 'application/json',
+          'X-Localization': 'id',
+          'Authorization': 'Bearer ${dotenv.env['OPENAI_API_KEY']}',
+          // -- only use if u have multiple organization --
+          // 'OpenAI-Organization': '${dotenv.env['OPENAI_API_ORGANIZATION_KEY']}',
+        });
 
-    return openAI;
+    Dio dio = Dio(options);
+
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
+    dio.interceptors.add(LogInterceptor(
+      responseBody: true,
+      error: true,
+      request: true,
+      requestBody: true,
+    ));
+
+    return dio;
   }
 }

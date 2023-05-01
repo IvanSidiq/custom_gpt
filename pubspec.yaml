@@ -33,7 +33,6 @@ dependencies:
     sdk: flutter
   bloc: ^8.1.1
   cached_network_image: ^3.2.1
-  chat_gpt_sdk: ^2.1.2
   cookie_jar: ^3.0.1
   cupertino_icons: ^1.0.5
   dio: ^5.1.1

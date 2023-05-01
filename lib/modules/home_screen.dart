@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gpt/models/chat.dart';
 import 'package:gpt/modules/cubit/ask_question_cubit.dart';
 import 'package:gpt/utils/customs/custom_color.dart';
 import 'package:gpt/utils/customs/custom_text_style.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../models/chat.dart';
+import '../models/text_completion.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _HomeScreen extends HookWidget {
           BlocConsumer<AskQuestionCubit, AskQuestionState>(
             listener: (context, state) {
               if (state is AskQuestionSuccess) {
-                print(state.chats.first.question + state.chats.first.answer);
+                // print(state.chats.first.question + state.chats.first.answer);
               }
             },
             builder: (context, state) {
@@ -42,6 +43,7 @@ class _HomeScreen extends HookWidget {
               return ListView.builder(
                   itemCount: chats.length,
                   itemBuilder: (context, index) {
+                    final answer = chats[index].answer as TextCompletion;
                     return VStack([
                       VStack([
                         'question'
@@ -68,9 +70,7 @@ class _HomeScreen extends HookWidget {
                             .textStyle(CustomTextStyle.labelSmall)
                             .color(CustomColor.onSurface.withOpacity(0.6))
                             .make(),
-                        chats[index]
-                            .answer
-                            .text
+                        answer.choices!.first.text!.text
                             .textStyle(CustomTextStyle.bodyMedium)
                             .make()
                             .pSymmetric(h: 8),

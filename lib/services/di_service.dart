@@ -1,4 +1,3 @@
-import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -13,10 +12,7 @@ class DIService {
     GetIt.I.registerSingleton<GoRouter>(GoRouter(routes: configureRoutes()));
   }
 
-  static void initializeConfig(OpenAI openAI) {
-    GetIt.I.registerSingleton<OpenAI>(OpenAI.instance.build(
-        token: "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",
-        baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
-        isLog: true));
+  static void initializeConfig(Dio dio) {
+    GetIt.I.registerSingleton<Dio>(dio);
   }
 }

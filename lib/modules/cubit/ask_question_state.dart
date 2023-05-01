@@ -29,3 +29,13 @@ class AskQuestionSuccess extends AskQuestionState {
   AskQuestionSuccess({required this.version, required this.chats})
       : super(propss: [version, chats]);
 }
+
+class AskQuestionFailed extends AskQuestionState {
+  final int version;
+  final String error;
+  final List<Chat> chat;
+
+  AskQuestionFailed(
+      {required this.version, required this.error, required this.chat})
+      : super(propss: [version, chat, error]);
+}
