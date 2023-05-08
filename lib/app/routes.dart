@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:gpt/modules/completion_screen.dart';
 import 'package:gpt/modules/home_screen.dart';
 
 import '../modules/splash_screen.dart';
@@ -17,6 +18,13 @@ List<RouteBase> configureRoutes() {
       name: 'home',
       builder: (context, state) {
         return const HomeScreen();
+      },
+    ),
+    GoRoute(
+      path: '/davinci',
+      name: 'Davinci',
+      builder: (context, state) {
+        return const CompletionScreen();
       },
     ),
     // GoRoute(

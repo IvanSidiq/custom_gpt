@@ -31,9 +31,9 @@ class MainRepository {
   Future<Dio> _setupDio() async {
     BaseOptions options = BaseOptions(
         baseUrl: "https://api.openai.com/v1/",
-        connectTimeout: const Duration(milliseconds: 8000),
-        receiveTimeout: const Duration(milliseconds: 8000),
-        sendTimeout: const Duration(milliseconds: 8000),
+        connectTimeout: const Duration(milliseconds: 30000),
+        receiveTimeout: const Duration(milliseconds: 30000),
+        sendTimeout: const Duration(milliseconds: 30000),
         headers: {
           'accept': 'application/json',
           'X-Localization': 'id',
