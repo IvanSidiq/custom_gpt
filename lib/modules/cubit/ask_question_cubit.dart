@@ -19,6 +19,7 @@ class AskQuestionCubit extends Cubit<AskQuestionState> {
   String answer = '';
 
   Future<void> askQuestion({required String question}) async {
+    emit(AskQuestionLoading());
     int version = state.incrementVersion();
 
     List<Chat> currentList = state.props[1] as List<Chat>;
@@ -34,7 +35,7 @@ class AskQuestionCubit extends Cubit<AskQuestionState> {
           .transform(const LineSplitter())
           .transform(const SseTransformer())
           .listen((event) {
-        if (event.data != '' || event.data.trim() != '[DONE]') {
+        if (event.data != '' || event.data != '[DONE]') {
           final TextCompletion data =
               TextCompletion.fromJson(json.decode(event.data));
 

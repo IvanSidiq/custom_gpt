@@ -13,7 +13,6 @@ class CompletionRepository extends BaseRepository {
       'n': 1, //max completion text
       'stream': true, //type of return
       'logprobs': null, //will take token if more than 1
-      // 'stop': '\n'
     });
 
     if (response.data != null) {

@@ -27,14 +27,22 @@ class _CompletionScreen extends HookWidget {
     final cubit = context.read<AskQuestionCubit>();
 
     final a = TextEditingController();
+    final scrollController = ScrollController();
     return Scaffold(
       body: SafeArea(
         child: VStack([
           VStack([
             BlocConsumer<AskQuestionCubit, AskQuestionState>(
               listener: (context, state) {
-                if (state is AskQuestionLoading) {
+                if (state is AskQuestionSuccess) {
                   a.text = '';
+                }
+                if (state is AskQuestionStream) {
+                  scrollController.animateTo(
+                    scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.linear,
+                  );
                 }
               },
               builder: (context, state) {
@@ -129,7 +137,7 @@ class _CompletionScreen extends HookWidget {
               }
               return Container();
             }),
-          ]).scrollVertical().expand(),
+          ]).scrollVertical(controller: scrollController).expand(),
           TextField(
             controller: a,
             keyboardType: TextInputType.emailAddress,
