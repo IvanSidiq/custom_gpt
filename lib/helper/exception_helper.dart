@@ -39,12 +39,7 @@ class ExceptionHelper<T> {
         final eResponse = e.response!;
         final statusCode = e.response!.statusCode;
 
-        if (eResponse.data['message'] != null) {
-          message = eResponse.data['message'] ??
-              "Something is wrong, please try again";
-        } else {
-          message = eResponse.toString();
-        }
+        message = eResponse.toString();
 
         return BaseResponse(
           message: message,

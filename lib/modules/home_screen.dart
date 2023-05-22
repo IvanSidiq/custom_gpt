@@ -87,7 +87,8 @@ class _HomeScreen extends HookWidget {
                               .withRounded(value: 16)
                               .make()
                               .onTap(() {
-                            context.pushNamed(instructModel[index]);
+                            context.pushNamed('completion',
+                                queryParams: {'model': instructModel[index]});
                           });
                         },
                       ).h(200).w(context.screenWidth).pOnly(bottom: 16),
@@ -124,7 +125,8 @@ class _HomeScreen extends HookWidget {
                               .withRounded(value: 16)
                               .make()
                               .onTap(() {
-                            context.goNamed(chatModel[index]);
+                            context.pushNamed('chat',
+                                queryParams: {'model': chatModel[index]});
                           });
                         },
                       ).h(100).w(context.screenWidth).pOnly(bottom: 16),

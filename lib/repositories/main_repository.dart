@@ -52,7 +52,7 @@ class MainRepository {
     };
 
     dio.interceptors.add(LogInterceptor(
-      responseBody: true,
+      responseBody: false,
       error: true,
       request: true,
       requestBody: true,

@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:gpt/helper/sse_transformer.dart';
 import 'package:retry/retry.dart';
 
 import '../models/base_response.dart';
@@ -47,11 +45,16 @@ class BaseRepository {
   }) async {
     try {
       final response = await retry(
-        () => dio.post(
-          api,
-          data: json.encode(data),
-          options: Options(responseType: ResponseType.stream, headers: headers),
-        ),
+        () {
+          return dio.post(
+            api,
+            data: json.encode(data),
+            options: Options(
+              responseType: ResponseType.stream,
+              headers: headers,
+            ),
+          );
+        },
         retryIf: (e) => e is SocketException || e is TimeoutException,
       );
 

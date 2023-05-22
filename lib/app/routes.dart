@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/modules/completion_screen.dart';
 import 'package:gpt/modules/home_screen.dart';
 
+import '../modules/chat_screen.dart';
 import '../modules/splash_screen.dart';
 
 List<RouteBase> configureRoutes() {
@@ -21,10 +22,17 @@ List<RouteBase> configureRoutes() {
       },
     ),
     GoRoute(
-      path: '/davinci',
-      name: 'Davinci',
+      path: '/completion',
+      name: 'completion',
       builder: (context, state) {
-        return const CompletionScreen();
+        return CompletionScreen(model: state.queryParams['model'] ?? 'davinci');
+      },
+    ),
+    GoRoute(
+      path: '/chat',
+      name: 'chat',
+      builder: (context, state) {
+        return ChatScreen(model: state.queryParams['model'] ?? '3.5');
       },
     ),
     // GoRoute(

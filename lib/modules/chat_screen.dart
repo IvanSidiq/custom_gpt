@@ -2,31 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gpt/models/chat.dart';
-import 'package:gpt/modules/cubit/ask_question_cubit.dart';
 import 'package:gpt/utils/customs/custom_color.dart';
 import 'package:gpt/utils/customs/custom_text_style.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class CompletionScreen extends StatelessWidget {
-  const CompletionScreen({Key? key, required this.model}) : super(key: key);
+import 'cubit/chat_cubit.dart';
+
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({Key? key, required this.model}) : super(key: key);
   final String model;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AskQuestionCubit(),
-      child: _CompletionScreen(model: model),
+      create: (context) => ChatCubit(),
+      child: _ChatScreen(model: model),
     );
   }
 }
 
-class _CompletionScreen extends HookWidget {
-  const _CompletionScreen({Key? key, required this.model}) : super(key: key);
+class _ChatScreen extends HookWidget {
+  const _ChatScreen({Key? key, required this.model}) : super(key: key);
   final String model;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AskQuestionCubit>();
+    final cubit = context.read<ChatCubit>();
 
     final a = TextEditingController();
     final scrollController = ScrollController();
@@ -34,12 +35,12 @@ class _CompletionScreen extends HookWidget {
       body: SafeArea(
         child: VStack([
           VStack([
-            BlocConsumer<AskQuestionCubit, AskQuestionState>(
+            BlocConsumer<ChatCubit, ChatState>(
               listener: (context, state) {
-                if (state is AskQuestionSuccess) {
+                if (state is ChatSuccess) {
                   a.text = '';
                 }
-                if (state is AskQuestionStream) {
+                if (state is ChatStream) {
                   scrollController.animateTo(
                     scrollController.position.maxScrollExtent,
                     duration: const Duration(milliseconds: 500),
@@ -97,9 +98,8 @@ class _CompletionScreen extends HookWidget {
                     });
               },
             ),
-            BlocBuilder<AskQuestionCubit, AskQuestionState>(
-                builder: (context, state) {
-              if (state is AskQuestionStream) {
+            BlocBuilder<ChatCubit, ChatState>(builder: (context, state) {
+              if (state is ChatStream) {
                 return VStack([
                   VStack([
                     'instruction'
@@ -144,7 +144,7 @@ class _CompletionScreen extends HookWidget {
             controller: a,
             keyboardType: TextInputType.emailAddress,
             onSubmitted: (value) {
-              cubit.askQuestion(question: value, model: model);
+              cubit.chatQuestion(question: value, model: model);
             },
             decoration: InputDecoration(
                 border: InputBorder.none,

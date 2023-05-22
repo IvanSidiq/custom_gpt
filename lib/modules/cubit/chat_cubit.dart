@@ -1,38 +1,34 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gpt/models/chat.dart';
-import 'package:gpt/models/text_completion.dart';
 
 import '../../helper/sse_transformer.dart';
-import '../../repositories/completion_repository.dart';
+import '../../models/chat_completion.dart';
+import '../../repositories/chat_repository.dart';
 
-part 'ask_question_state.dart';
+part 'chat_state.dart';
 
-class AskQuestionCubit extends Cubit<AskQuestionState> {
-  AskQuestionCubit() : super(AskQuestionInitial(chats: []));
+class ChatCubit extends Cubit<ChatState> {
+  ChatCubit() : super(ChatInitial(chats: []));
 
-  final _repo = CompletionRepository();
+  final _repo = ChatRepository();
 
   String answer = '';
 
-  Future<void> askQuestion(
+  Future<void> chatQuestion(
       {required String question, required String model}) async {
-    // emit(AskQuestionLoading());
+    // emit(ChatLoading());
     int version = state.incrementVersion();
+
     List<Chat> currentList = state.props[1] as List<Chat>;
 
     answer = '';
 
-    _repo
-        .getTextCompletionR(question: question, model: model)
-        .listen((response) {
+    _repo.getTextChatR(question: question, model: model).listen((response) {
       final data = response.data as ResponseBody;
-      print('Response Text:');
 
       data.stream
           .transform(unit8Transformer)
@@ -41,23 +37,22 @@ class AskQuestionCubit extends Cubit<AskQuestionState> {
           .transform(const SseTransformer())
           .listen((event) {
         if (event.data != '' || event.data != '[DONE]') {
-          print(event.data);
-          final TextCompletion data =
-              TextCompletion.fromJson(json.decode(event.data));
+          final ChatCompletion data =
+              ChatCompletion.fromJson(json.decode(event.data));
 
           if (data.choices != null) {
-            answer = answer + (data.choices!.first.text ?? '');
+            answer = answer + (data.choices!.first.delta!.content);
           }
 
           final newChat = Chat(question: question, answer: answer);
-          emit(AskQuestionStream(
+          emit(ChatStream(
               version: version, chats: currentList, newChat: newChat));
         }
       }).onDone(() {
         final currentChat = Chat(question: question, answer: answer);
 
         currentList.add(currentChat);
-        emit(AskQuestionSuccess(version: version, chats: currentList));
+        emit(ChatSuccess(version: version, chats: currentList));
       });
     });
   }

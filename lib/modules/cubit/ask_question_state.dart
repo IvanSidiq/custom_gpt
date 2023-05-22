@@ -22,7 +22,12 @@ class AskQuestionInitial extends AskQuestionState {
       : super(propss: [version, chats]);
 }
 
-class AskQuestionLoading extends AskQuestionState {}
+class AskQuestionLoading extends AskQuestionState {
+  final AskQuestionState state;
+
+  AskQuestionLoading(this.state)
+      : super(propss: [state.props[0], state.props[1], state.props[2]]);
+}
 
 class AskQuestionStream extends AskQuestionState {
   final int version;
