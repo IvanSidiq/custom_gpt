@@ -20,14 +20,16 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> chatQuestion(
       {required String question, required String model}) async {
-    // emit(ChatLoading());
+    emit(ChatLoading(state));
     int version = state.incrementVersion();
 
     List<Chat> currentList = state.props[1] as List<Chat>;
 
     answer = '';
 
-    _repo.getTextChatR(question: question, model: model).listen((response) {
+    _repo
+        .getTextChatR(chatList: currentList, question: question, model: model)
+        .listen((response) {
       final data = response.data as ResponseBody;
 
       data.stream

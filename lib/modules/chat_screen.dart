@@ -31,14 +31,20 @@ class _ChatScreen extends HookWidget {
 
     final a = TextEditingController();
     final scrollController = ScrollController();
+    bool textReadOnlyC = false;
+
     return Scaffold(
       body: SafeArea(
         child: VStack([
           VStack([
             BlocConsumer<ChatCubit, ChatState>(
               listener: (context, state) {
-                if (state is ChatSuccess) {
+                if (state is ChatLoading) {
                   a.text = '';
+                  textReadOnlyC = true;
+                }
+                if (state is ChatSuccess) {
+                  textReadOnlyC = false;
                 }
                 if (state is ChatStream) {
                   scrollController.animateTo(
@@ -57,7 +63,7 @@ class _ChatScreen extends HookWidget {
                     itemBuilder: (context, index) {
                       return VStack([
                         VStack([
-                          'instruction'
+                          'question'
                               .text
                               .textStyle(CustomTextStyle.labelSmall)
                               .color(CustomColor.onSurface.withOpacity(0.6))
@@ -142,6 +148,7 @@ class _ChatScreen extends HookWidget {
           ]).scrollVertical(controller: scrollController).expand(),
           TextField(
             controller: a,
+            readOnly: textReadOnlyC,
             keyboardType: TextInputType.emailAddress,
             onSubmitted: (value) {
               cubit.chatQuestion(question: value, model: model);

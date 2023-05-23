@@ -22,7 +22,11 @@ class ChatInitial extends ChatState {
       : super(propss: [version, chats]);
 }
 
-class ChatLoading extends ChatState {}
+class ChatLoading extends ChatState {
+  final ChatState state;
+
+  ChatLoading(this.state) : super(propss: [state.props[0], state.props[1]]);
+}
 
 class ChatStream extends ChatState {
   final int version;
