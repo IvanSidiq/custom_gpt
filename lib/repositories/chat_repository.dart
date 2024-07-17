@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:gpt/utils/api.dart';
 
 import '../helper/base_repository.dart';
@@ -27,14 +28,16 @@ class ChatRepository extends BaseRepository {
     }
     messages.add({'role': 'user', 'content': question});
 
-    final response = await post(kApiTextChat, data: {
-      'model': modelC,
-      'messages': messages,
-      'max_tokens': 1000, //max text output
-      'temperature': 0.7, // 0-2, 0 more focused, 2 more random
-      'n': 1, //max completion text
-      'stream': true, //type of return
-    });
+    final response = await post(kApiTextChat,
+        data: {
+          'model': modelC,
+          'messages': messages,
+          'max_tokens': 1000, //max text output
+          'temperature': 0.7, // 0-2, 0 more focused, 2 more random
+          'n': 1, //max completion text
+          'stream': true, //type of return
+        },
+        responseType: ResponseType.stream);
 
     if (response.data != null) {
       yield BaseResponse(

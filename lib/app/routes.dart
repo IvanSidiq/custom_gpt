@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:gpt/modules/completion_screen.dart';
+import 'package:gpt/modules/dalle_screen.dart';
 import 'package:gpt/modules/home_screen.dart';
 
 import '../modules/chat_screen.dart';
@@ -33,6 +34,13 @@ List<RouteBase> configureRoutes() {
       name: 'chat',
       builder: (context, state) {
         return ChatScreen(model: state.queryParams['model'] ?? '3.5');
+      },
+    ),
+    GoRoute(
+      path: '/dall-e',
+      name: 'dall-e',
+      builder: (context, state) {
+        return DallEScreen(model: state.queryParams['model'] ?? '3.5');
       },
     ),
     // GoRoute(

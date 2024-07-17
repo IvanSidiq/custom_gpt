@@ -5,6 +5,7 @@ import 'package:dio/io.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../services/di_service.dart';
 
@@ -15,6 +16,7 @@ class MainRepository {
 
   _init() async {
     await setConfig();
+
     GetIt.I<GoRouter>()
         .routerDelegate
         .navigatorKey
@@ -44,12 +46,14 @@ class MainRepository {
 
     Dio dio = Dio(options);
 
-    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
+    if (!kIsWeb) {
+      (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
+    }
 
     dio.interceptors.add(LogInterceptor(
       responseBody: false,

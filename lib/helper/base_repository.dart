@@ -42,6 +42,7 @@ class BaseRepository {
     String api, {
     Map<String, dynamic>? headers,
     Map<String, dynamic>? data,
+    ResponseType responseType = ResponseType.json,
   }) async {
     try {
       final response = await retry(
@@ -50,7 +51,7 @@ class BaseRepository {
             api,
             data: json.encode(data),
             options: Options(
-              responseType: ResponseType.stream,
+              responseType: responseType,
               headers: headers,
             ),
           );

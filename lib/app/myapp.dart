@@ -29,23 +29,20 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final route = GetIt.I<GoRouter>();
-    return ScreenUtilInit(
-      designSize: const Size(390, 870),
-      builder: (context, widget) => MaterialApp.router(
-        routerConfig: route,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        theme: ThemeData(
-          colorScheme: _lightScheme,
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: 'Inter',
-        ),
-        darkTheme: ThemeData(
-          colorScheme: _darkScheme,
-          scaffoldBackgroundColor: Colors.black,
-          fontFamily: 'Inter',
-        ),
+    return MaterialApp.router(
+      routerConfig: route,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      theme: ThemeData(
+        colorScheme: _lightScheme,
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Inter',
+      ),
+      darkTheme: ThemeData(
+        colorScheme: _darkScheme,
+        scaffoldBackgroundColor: Colors.black,
+        fontFamily: 'Inter',
       ),
     );
   }

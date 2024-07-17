@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/modules/cubit/expand_cubit.dart';
 import 'package:gpt/utils/customs/custom_color.dart';
 import 'package:gpt/utils/customs/custom_text_style.dart';
+// import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -39,6 +40,19 @@ class _HomeScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: CustomColor.surface,
+      // floatingActionButton: FloatingActionButton(onPressed: () async {
+      //   final a = await getKioskMode();
+
+      //   if (a.index == 1) {
+      //     startKioskMode().then((value) {
+      //       print(value ? 'success' : 'failed');
+      //     });
+      //   } else {
+      //     stopKioskMode().then((value) {
+      //       print(value != null ? (value ? 'success' : 'failed') : '');
+      //     });
+      //   }
+      // }),
       body: SafeArea(
         child: BlocConsumer<ExpandCubit, ExpandState>(
           listener: (context, state) {},
@@ -161,7 +175,11 @@ class _HomeScreen extends HookWidget {
                               .p16
                               .color(CustomColor.primary)
                               .withRounded(value: 16)
-                              .make();
+                              .make()
+                              .onTap(() {
+                            context.pushNamed('dall-e',
+                                queryParams: {'model': imageModel[index]});
+                          });
                         },
                       ).h(75).w(context.screenWidth).pOnly(bottom: 16),
                 HStack([
